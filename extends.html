@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>实现JS中继承的几种方法</title>
+</head>
+<body>
+    
+    <script>
+    
+        function ClassA(sColor)
+        {
+            this.color = sColor;
+            this.showColor = function() {
+                console.log(this.color);
+            }
+        }
+
+        // 冒充
+        function ClassB(sColor, sName)
+        {
+            this.newMethod = ClassA;
+            this.newMethod(sColor);
+            delete this.newMethod;
+
+            this.name = sName;
+        }
+
+        // call方法
+        function ClassC(sColor, sName)
+        {
+            ClassA.call(this, sColor);
+            this.name = sName;
+        }
+
+        // apply方法
+        function ClassD(sColor, sName)
+        {
+            ClassA.apply(this, [sColor]);
+
+            this.name = sName;
+        }
+
+        // 原型链方法
+        function ClassE() { }
+        ClassE.prototype = new ClassA();
+
+        var cb = new ClassB('Red of B', 'Bname');
+        var cc = new ClassB('Red of C', 'Cname');
+        var cd = new ClassB('Red of D', 'Dname');
+        var ce = new ClassB('Red of E', 'Ename');
+
+        cb.showColor();
+        cc.showColor();
+        cd.showColor();
+        ce.showColor();
+
+    </script>
+    
+</body>
+</html>
